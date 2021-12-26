@@ -6,37 +6,39 @@
         </el-header>
         <el-divider></el-divider>
         <div class="title">{{ problem.showTitle }}</div>
-        <div v-if="!problem.type">
-            <el-radio-group v-model="problem.selected">
-                <el-row
-                    v-for="(item,index) in problem.options"
-                    :key="item.title"
-                >
-                    <el-checkbox class="options">
-                        {{ String.fromCharCode(index + 65) + "、" + item.title }}
+        <el-form v-model="problem">
+            <el-form-item v-if="!problem.type">
+                <el-row v-for="(item,index) in problem.options" :key="item.title">
+                    <el-checkbox
+                        @change="multipleSelectedChange(index)"
+                        class="options"
+                        :label="String.fromCharCode(index + 65) + '、' + item.title"
+                    >
                     </el-checkbox>
                 </el-row>
-            </el-radio-group>
-        </div>
-        <div v-else>
-            <el-radio-group v-model="problem.multipleSelected">
-                <el-row
-                    v-for="(item,index) in problem.options"
-                    :key="item.title"
-                >
-                    <el-radio
-                        class="options"
-                        aria-selected="false"
-                        :label="String.fromCharCode(index + 65) + '、'+ item.title"
-                    >
-                    </el-radio>
-                </el-row>
-
-            </el-radio-group>
-        </div>
+            </el-form-item>
+            <el-form-item v-else>
+                <el-radio-group v-model="selected">
+                    <el-row v-for="(item,index) in problem.options" :key="item.title">
+                        <el-radio class="options" :label="index">
+                            {{ String.fromCharCode(index + 65) + "、" + item.title }}
+                        </el-radio>
+                    </el-row>
+                </el-radio-group>
+            </el-form-item>
+        </el-form>
         <div style="margin-top: 30px">
             <el-button type="primary" @click="submit">提交答案</el-button>
             <el-button @click="next">下一题</el-button>
+        </div>
+
+        <div v-show="hasSubmit" style="margin-top: 20px">
+            <div v-if="correct" style="color: green">
+                回答正确!
+            </div>
+            <div v-else style="color: red">
+                回答错误，正确答案：{{ answer }}
+            </div>
         </div>
     </div>
 </template>
@@ -51,9 +53,13 @@ export default {
             store: new Store(),
             problem: {
                 options: [],
-                selected: "",
-                multipleSelected: [],
             },
+            multipleSelected: [],
+            selected: "",
+            correct: true,
+            answer: "",
+            hasSubmit: false,
+            nowIndex: 0,
         };
     },
     created() {
@@ -64,19 +70,67 @@ export default {
                 showClose: true,
                 message: "请先添加题目",
                 type: "error",
-                duration: 3000,
+                duration: 1000,
             });
+            this.back();
+            return;
         }
-        this.problem = this.exercise.problems[Math.floor(Math.random() * this.exercise.problems.length)];
-        this.problem.showTitle = "【" + (this.problem.type ? "单选" : "多选") + "】" + this.problem.title;
+        this.next();
     },
     methods: {
+        multipleSelectedChange(index) {
+            let selected = this.multipleSelected;
+            if (!selected.includes(index)) {
+                selected.push(index);
+            } else {
+                selected.splice(selected.indexOf(index), 1);
+            }
+        },
         submit() {
-            console.log({selected: this.problem.selected,multipleSelected: this.problem.multipleSelected})
+            if ((this.problem.type && this.selected === '') || (!this.problem.type && !this.multipleSelected.length)) {
+                this.$message({
+                    showClose: true,
+                    message: "请选择答案！",
+                    type: "error",
+                    duration: 1000,
+                });
+                return;
+            }
+            this.correct = true;
+            this.answer = this.problem.options.map((item, index) => {
+                return item.isAnswer && String.fromCharCode(index + 65);
+            }).filter(item => {
+                return item;
+            }).join(" ");
+            this.hasSubmit = true;
+            if (this.problem.type) {
+                this.correct = this.problem.options[this.selected].isAnswer;
+            } else {
+                this.multipleSelected.forEach(item => {
+                    if (!this.problem.options[item].isAnswer) {
+                        this.correct = false;
+                    }
+                });
+                this.problem.options.forEach((item, index) => {
+                    if (item.isAnswer) {
+                        if (!this.multipleSelected.includes(index)) {
+                            this.correct = false;
+                        }
+                    }
+                });
+            }
         },
         next() {
-            this.problem = this.exercise.problems[Math.floor(Math.random() * this.exercise.problems.length)];
+            const randArr = [...this.exercise.problems];
+            randArr.splice(this.nowIndex, 1);
+            this.problem = randArr[Math.floor(Math.random() * randArr.length)];
+            this.nowIndex = this.exercise.problems.findIndex(item => item.title === this.problem.title);
             this.problem.showTitle = "【" + (this.problem.type ? "单选" : "多选") + "】" + this.problem.title;
+            this.hasSubmit = false;
+            this.correct = true;
+            this.selected = "";
+            this.multipleSelected = [];
+            console.log(this.problem);
         },
         back: function() {
             this.$router.back();
