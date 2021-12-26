@@ -1,45 +1,57 @@
 <template>
-    <el-container>
-        <el-card
-            class="exercise"
-            v-for="item in exercises"
-            :key="item.index"
-        >
-            <div style="margin-bottom: 20px">{{ item.title }}</div>
-            <div>
-                <el-button type="success" icon="el-icon-thumb" @click.native="study()" circle></el-button>
-                <el-button type="primary" icon="el-icon-edit" @click.native="edit()" circle></el-button>
-            </div>
-        </el-card>
-    </el-container>
+    <div>
+        <el-row>
+            <el-col :span="24" style="text-align: left;margin: 20px">
+                <el-button @click.native="edit()">新增题库</el-button>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col
+                :span="8"
+                v-for="item in exercises"
+                :key="item.id"
+            >
+                <el-card class="exercise">
+                    <div style="margin-bottom: 20px">{{ item.title }}</div>
+                    <el-button style="margin: 10px" type="success" icon="el-icon-switch-button" @click.native="study()"
+                               circle></el-button>
+                    <el-button type="primary" icon="el-icon-edit" @click.native="edit(item.id)" circle></el-button>
+                </el-card>
+            </el-col>
+
+        </el-row>
+    </div>
 </template>
 
 <script>
+
+import Store from "electron-store";
 
 export default {
     name: "Home",
     components: {},
     data() {
         return {
-            exercises: [{
-                index: 1,
-                title: "Javascript科目二",
-            }, {
-                index: 2,
-                title: "Javascript科目三",
-            }, {
-                index: 3,
-                title: "Javascript科目四",
-            }],
+            store: new Store(),
+            exercises: [],
         };
+    },
+    mounted() {
+        let exercises = this.store.get("exercises");
+
+        if(exercises) {
+            this.exercises = exercises;
+        } else {
+            this.store.set('exercises',[]);
+        }
     },
     methods: {
         study() {
             this.$router.push("/study");
         },
-        edit() {
-            this.$router.push('/edit-repository')
-        }
+        edit(id) {
+            this.$router.push({ name: "EditRepository", params: { id: id } });
+        },
     },
 };
 </script>
@@ -47,6 +59,5 @@ export default {
 <style scoped>
 .exercise {
     margin: 20px;
-    cursor: pointer;
 }
 </style>

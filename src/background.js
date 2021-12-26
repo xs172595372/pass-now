@@ -11,7 +11,6 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 async function createWindow() {
-    // Create the browser window.
     const win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -54,14 +53,6 @@ app.on("activate", () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
-    // if (isDevelopment && !process.env.IS_TEST) {
-    //     // Install Vue Devtools
-    //     try {
-    //         await installExtension(VUEJS_DEVTOOLS);
-    //     } catch (e) {
-    //         console.error("Vue Devtools failed to install:", e.toString());
-    //     }
-    // }
     createWindow();
 });
 
@@ -79,3 +70,7 @@ if (isDevelopment) {
         });
     }
 }
+
+const Store = require('electron-store');
+
+Store.initRenderer();
