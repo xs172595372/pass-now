@@ -146,7 +146,7 @@ export default {
 <style scoped>
 .title {
     font-weight: bold;
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .options {
