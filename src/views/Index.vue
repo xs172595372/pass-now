@@ -13,7 +13,8 @@
             >
                 <el-card class="exercise">
                     <div style="margin-bottom: 20px">{{ item.title }}</div>
-                    <el-button style="margin: 10px" type="success" icon="el-icon-switch-button" @click.native="study(item.id)"
+                    <el-button style="margin: 10px" type="success" icon="el-icon-switch-button"
+                               @click.native="study(item.id)"
                                circle></el-button>
                     <el-button type="primary" icon="el-icon-edit" @click.native="edit(item.id)" circle></el-button>
                 </el-card>
@@ -39,10 +40,10 @@ export default {
     mounted() {
         let exercises = this.store.get("exercises");
 
-        if(exercises) {
+        if (exercises) {
             this.exercises = exercises;
         } else {
-            this.store.set('exercises',[]);
+            this.store.set("exercises", []);
         }
     },
     methods: {

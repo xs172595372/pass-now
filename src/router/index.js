@@ -24,7 +24,7 @@ const routes = [
         name: "Study",
         component: () =>
             import("../views/Study.vue"),
-    }
+    },
 ];
 
 const router = new VueRouter({

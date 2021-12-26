@@ -5,7 +5,7 @@
             <span style="font-size: 20px;font-weight: bold">{{ this.exercise.title }}</span>
         </el-header>
         <el-divider></el-divider>
-        <div class="title">{{ problem.showTitle }}</div>
+        <pre class="title">{{ problem.showTitle }}</pre>
         <el-form v-model="problem">
             <el-form-item v-if="!problem.type">
                 <el-row v-for="(item,index) in problem.options" :key="item.title">
@@ -28,7 +28,7 @@
             </el-form-item>
         </el-form>
         <div style="margin-top: 30px">
-            <el-button type="primary" @click="submit">提交答案</el-button>
+            <el-button type="primary" @click="submit" v-if="!problem.type">提交答案</el-button>
             <el-button @click="next">下一题</el-button>
         </div>
 
@@ -64,7 +64,6 @@ export default {
     },
     created() {
         this.exercise = this.store.get("exercises").find(item => item.id === this.$route.params.id);
-
         if (this.exercise.problems.length === 0) {
             this.$message({
                 showClose: true,
@@ -76,6 +75,16 @@ export default {
             return;
         }
         this.next();
+        document.onkeydown = ()=> {
+
+        }
+    },
+    watch: {
+        selected() {
+            if (this.selected !== "") {
+                this.submit();
+            }
+        },
     },
     methods: {
         multipleSelectedChange(index) {
@@ -87,7 +96,7 @@ export default {
             }
         },
         submit() {
-            if ((this.problem.type && this.selected === '') || (!this.problem.type && !this.multipleSelected.length)) {
+            if ((this.problem.type && this.selected === "") || (!this.problem.type && !this.multipleSelected.length)) {
                 this.$message({
                     showClose: true,
                     message: "请选择答案！",
@@ -106,11 +115,6 @@ export default {
             if (this.problem.type) {
                 this.correct = this.problem.options[this.selected].isAnswer;
             } else {
-                this.multipleSelected.forEach(item => {
-                    if (!this.problem.options[item].isAnswer) {
-                        this.correct = false;
-                    }
-                });
                 this.problem.options.forEach((item, index) => {
                     if (item.isAnswer) {
                         if (!this.multipleSelected.includes(index)) {
@@ -143,7 +147,6 @@ export default {
 .title {
     font-weight: bold;
     font-size: 22px;
-    line-height: 50px;
 }
 
 .options {
