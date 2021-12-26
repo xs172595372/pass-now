@@ -13,7 +13,7 @@
             >
                 <el-card class="exercise">
                     <div style="margin-bottom: 20px">{{ item.title }}</div>
-                    <el-button style="margin: 10px" type="success" icon="el-icon-switch-button" @click.native="study()"
+                    <el-button style="margin: 10px" type="success" icon="el-icon-switch-button" @click.native="study(item.id)"
                                circle></el-button>
                     <el-button type="primary" icon="el-icon-edit" @click.native="edit(item.id)" circle></el-button>
                 </el-card>
@@ -46,8 +46,8 @@ export default {
         }
     },
     methods: {
-        study() {
-            this.$router.push("/study");
+        study(id) {
+            this.$router.push({ name: "Study", params: { id: id } });
         },
         edit(id) {
             this.$router.push({ name: "EditRepository", params: { id: id } });
