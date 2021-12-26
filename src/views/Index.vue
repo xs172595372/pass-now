@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="padding: 30px">
         <el-row>
             <el-col :span="24" style="text-align: left;margin: 20px">
                 <el-button @click.native="edit()">新增题库</el-button>

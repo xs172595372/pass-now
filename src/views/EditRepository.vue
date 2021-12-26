@@ -1,5 +1,5 @@
 <template>
-    <el-container>
+    <div style="padding: 30px">
         <el-form ref="form" :model="form" label-width="80px">
             <el-form-item label="id" hidden>
                 <el-input v-model="form.id"></el-input>
@@ -17,7 +17,7 @@
                     <el-table-column
                         prop="title"
                         label="题目"
-                        width="200">
+                        width="600">
                     </el-table-column>
                     <el-table-column
                         prop="type"
@@ -68,7 +68,7 @@
                 <el-button type="primary" @click="saveProblem()">确 定</el-button>
             </span>
         </el-dialog>
-    </el-container>
+    </div>
 </template>
 <script>
 
