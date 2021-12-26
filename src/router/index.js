@@ -9,13 +9,22 @@ const routes = [
         path: "/",
         name: "Index",
         component: Index,
-    },
-    {
-        path: "/detail",
-        name: "Detail",
+    }, {
+        path: "/study",
+        name: "Study",
         component: () =>
-            import("../views/Detail.vue"),
-    },
+            import("../views/Study.vue"),
+    }, {
+        path: "/edit-repository",
+        name: "EditRepository",
+        component: () =>
+            import("../views/EditRepository.vue"),
+    }, {
+        path: "/study",
+        name: "Study",
+        component: () =>
+            import("../views/Study.vue"),
+    }
 ];
 
 const router = new VueRouter({

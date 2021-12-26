@@ -4,15 +4,13 @@
             class="exercise"
             v-for="item in exercises"
             :key="item.index"
-            @click.native="enter()"
-            @contextmenu.prevent.native="show()"
         >
-            {{ item.title }}
+            <div style="margin-bottom: 20px">{{ item.title }}</div>
+            <div>
+                <el-button type="success" icon="el-icon-thumb" @click.native="study()" circle></el-button>
+                <el-button type="primary" icon="el-icon-edit" @click.native="edit()" circle></el-button>
+            </div>
         </el-card>
-        <el-popover
-            v-show="visible">
-
-        </el-popover>
     </el-container>
 </template>
 
@@ -33,16 +31,15 @@ export default {
                 index: 3,
                 title: "Javascript科目四",
             }],
-            visible: false,
         };
     },
     methods: {
-        enter() {
-            this.$router.push("/detail");
+        study() {
+            this.$router.push("/study");
         },
-        show() {
-            this.visible = true;
-        },
+        edit() {
+            this.$router.push('/edit-repository')
+        }
     },
 };
 </script>
