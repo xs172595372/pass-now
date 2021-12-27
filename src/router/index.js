@@ -15,15 +15,10 @@ const routes = [
         component: () =>
             import("../views/Study.vue"),
     }, {
-        path: "/edit-repository",
+        path: "/repository",
         name: "EditRepository",
         component: () =>
-            import("../views/EditRepository.vue"),
-    }, {
-        path: "/study",
-        name: "Study",
-        component: () =>
-            import("../views/Study.vue"),
+            import("../views/Repository.vue"),
     },
 ];
 

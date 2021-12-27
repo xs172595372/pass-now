@@ -7,20 +7,23 @@
             <el-form-item label="题库名称">
                 <el-input v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item  label="题目列表" style="text-align: left">
+            <el-form-item label="题目列表" style="text-align: left">
                 <el-table :data="this.form.problems">
                     <el-table-column
                         type="index"
                         label="ID"
-                        width="180">
+                        width="40">
                     </el-table-column>
                     <el-table-column
                         prop="title"
                         label="题目"
-                        width="600">
+                        sortable
+                        min-width="400">
                     </el-table-column>
                     <el-table-column
                         prop="type"
+                        :formatter="typeFormatter"
+                        width="50"
                         label="类型">
                     </el-table-column>
                     <el-table-column
@@ -108,21 +111,27 @@ export default {
         },
     },
     methods: {
+        typeFormatter(row) {
+            return row.type? '单选': '多选';
+        },
         editProblem() {
             this.editProblemDialog = true;
         },
         delProblem(row) {
-            let index = this.form.problems.findIndex(item => {
-                return item.id === row.id
-            });
+            this.$confirm("确认删除吗？").then(() => {
+                let index = this.form.problems.findIndex(item => {
+                    return item.id === row.id;
+                });
 
-            this.form.problems.splice(index,1);
-            console.log(this.form.problems);
+                this.form.problems.splice(index, 1);
+                console.log(this.form.problems);
+            }).catch(() => {
+            });
         },
         saveProblem() {
             this.problem.options.forEach(option => {
                 this.problem.answer.forEach(item => {
-                    if(option.title ===  item) {
+                    if (option.title === item) {
                         option.isAnswer = true;
                     }
                 });
@@ -132,7 +141,7 @@ export default {
                 id: Utils.uuid(),
                 title: this.problem.title,
                 options: this.problem.options,
-                type: this.problem.answer.length === 1
+                type: this.problem.answer.length === 1,
             });
             this.editProblemDialog = false;
         },
@@ -149,10 +158,13 @@ export default {
             this.$router.back();
         },
         del() {
-            let exercises = this.store.get("exercises");
-            let result = exercises.filter(item => item.id !== this.$route.params.id);
-            this.store.set("exercises", result);
-            this.$router.back();
+            this.$confirm("确认删除吗？").then(() => {
+                let exercises = this.store.get("exercises");
+                let result = exercises.filter(item => item.id !== this.$route.params.id);
+                this.store.set("exercises", result);
+                this.$router.back();
+            }).catch(() => {
+            });
         },
     },
 };

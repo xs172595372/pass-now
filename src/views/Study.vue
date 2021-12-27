@@ -5,7 +5,7 @@
             <span style="font-size: 20px;font-weight: bold">{{ this.exercise.title }}</span>
         </el-header>
         <el-divider></el-divider>
-        <pre class="title">{{ problem.showTitle }}</pre>
+        <span class="title">{{ problem.showTitle }}</span>
         <el-form v-model="problem">
             <el-form-item v-if="!problem.type">
                 <el-row v-for="(item,index) in problem.options" :key="item.title">
@@ -59,7 +59,6 @@ export default {
             correct: true,
             answer: "",
             hasSubmit: false,
-            nowIndex: 0,
         };
     },
     created() {
@@ -75,9 +74,9 @@ export default {
             return;
         }
         this.next();
-        document.onkeydown = ()=> {
+        document.onkeydown = () => {
 
-        }
+        };
     },
     watch: {
         selected() {
@@ -115,6 +114,12 @@ export default {
             if (this.problem.type) {
                 this.correct = this.problem.options[this.selected].isAnswer;
             } else {
+                this.multipleSelected.forEach(item => {
+                    if (!this.problem.options[item].isAnswer) {
+                        this.correct = false;
+                        return;
+                    }
+                });
                 this.problem.options.forEach((item, index) => {
                     if (item.isAnswer) {
                         if (!this.multipleSelected.includes(index)) {
@@ -125,10 +130,8 @@ export default {
             }
         },
         next() {
-            const randArr = [...this.exercise.problems];
-            randArr.splice(this.nowIndex, 1);
+            const randArr = this.exercise.problems.filter(item => item.title !== this.problem.title);
             this.problem = randArr[Math.floor(Math.random() * randArr.length)];
-            this.nowIndex = this.exercise.problems.findIndex(item => item.title === this.problem.title);
             this.problem.showTitle = "【" + (this.problem.type ? "单选" : "多选") + "】" + this.problem.title;
             this.hasSubmit = false;
             this.correct = true;
@@ -145,12 +148,11 @@ export default {
 
 <style scoped>
 .title {
-    font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .options {
-    font-size: 20px;
+    font-size: 18px;
     margin-top: 30px;
     margin-left: 10px;
 }
