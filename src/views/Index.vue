@@ -1,5 +1,7 @@
 <template>
     <div style="padding: 30px">
+        <div style="font-size: 20px;font-weight: bold;text-align: left">我的题库</div>
+        <el-divider></el-divider>
         <el-row>
             <el-col
                 :span="8"
@@ -19,8 +21,6 @@
                     <div><i class="el-icon-plus"></i><span style="margin-left: 20px;">新增题库</span></div>
                 </el-card>
             </el-col>
-
-
         </el-row>
     </div>
 </template>

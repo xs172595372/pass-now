@@ -1,5 +1,7 @@
 <template>
     <div style="padding: 30px">
+        <div style="color:#333;font-size: 20px;font-weight: bold;text-align: left"><i class="el-icon-arrow-left" style="font-size: 20px;cursor: pointer;margin-right: 10px" @click="back"></i>编辑题库</div>
+        <el-divider></el-divider>
         <el-form ref="form" :model="form" label-width="80px">
             <el-form-item label="id" hidden>
                 <el-input v-model="form.id"></el-input>
@@ -42,7 +44,6 @@
                 <el-button @click.native="editProblem()">新增题目</el-button>
                 <el-button type="primary" @click.native="save">保存</el-button>
                 <el-button type="danger" @click.native="del">删除</el-button>
-                <el-button type="info" @click.native="back">返回</el-button>
             </el-form-item>
         </el-form>
         <el-dialog

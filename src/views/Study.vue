@@ -1,7 +1,7 @@
 <template>
     <div style="text-align: left; padding: 30px">
-        <el-button @click.native="back" style="margin-right: 20px">返回首页</el-button>
-        <span style="font-size: 20px;font-weight: bold">{{ this.exercise.title }}</span>
+        <i class="el-icon-arrow-left" style="font-size: 20px;cursor: pointer" @click="back"></i>
+        <span style="color:#333;font-size: 20px;font-weight: bold;margin-left: 10px">{{ this.exercise.title }}</span>
         <el-divider></el-divider>
         <span class="title">{{ problem.showTitle }}</span>
         <el-form v-model="problem">
