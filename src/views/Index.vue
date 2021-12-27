@@ -39,7 +39,6 @@ export default {
     },
     mounted() {
         let exercises = this.store.get("exercises");
-
         if (exercises) {
             this.exercises = exercises;
         } else {

@@ -22,25 +22,27 @@
                     </el-table-column>
                     <el-table-column
                         prop="type"
-                        :formatter="typeFormatter"
+                        :formatter="row => row.type ? '单选' : '多选'"
                         width="50"
                         label="类型">
                     </el-table-column>
                     <el-table-column
                         fixed="right"
                         label="操作"
-                        width="120">
+                        align="center"
+                        width="150">
                         <template slot-scope="scope">
+                            <el-button @click="editProblem(scope.row)" type="primary" size="small">编辑</el-button>
                             <el-button @click="delProblem(scope.row)" type="danger" size="small">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click.native="editProblem">新增题目</el-button>
+                <el-button @click.native="editProblem()">新增题目</el-button>
                 <el-button type="primary" @click.native="save">保存</el-button>
                 <el-button type="danger" @click.native="del">删除</el-button>
-                <el-button @click.native="cancel">取消</el-button>
+                <el-button type="info" @click.native="back">取消</el-button>
             </el-form-item>
         </el-form>
         <el-dialog
@@ -89,7 +91,7 @@ export default {
                 problems: [],
             },
             editProblemDialog: false,
-            problem: { options: [], answer: [] },
+            problem: { title: "", options: [], answer: [] },
             optionsText: "",
         };
     },
@@ -111,11 +113,31 @@ export default {
         },
     },
     methods: {
-        typeFormatter(row) {
-            return row.type? '单选': '多选';
-        },
-        editProblem() {
+        editProblem(row) {
             this.editProblemDialog = true;
+            if (row) {
+                this.problem = {
+                    id: row.id,
+                    title: row.title,
+                    options: row.options,
+                    answer: [],
+                };
+                let options = [];
+                row.options.forEach(item => {
+                    options.push(item.title);
+                    item.isAnswer && this.problem.answer.push(item.title);
+                });
+                this.optionsText = options.join("\n");
+            } else {
+                this.problem = {
+                    id: "",
+                    title: "",
+                    options: [],
+                    answer: [],
+                };
+                this.optionsText = "";
+            }
+
         },
         delProblem(row) {
             this.$confirm("确认删除吗？").then(() => {
@@ -136,17 +158,20 @@ export default {
                     }
                 });
             });
-
-            this.form.problems.push({
-                id: Utils.uuid(),
-                title: this.problem.title,
-                options: this.problem.options,
-                type: this.problem.answer.length === 1,
-            });
+            if (this.problem.id) {
+                let obj = this.form.problems.find(item => item.id === this.problem.id);
+                obj.title = this.problem.title;
+                obj.options = this.problem.options;
+                obj.type = this.problem.answer.length === 1;
+            } else {
+                this.form.problems.unshift({
+                    id: Utils.uuid(),
+                    title: this.problem.title,
+                    options: this.problem.options,
+                    type: this.problem.answer.length === 1,
+                });
+            }
             this.editProblemDialog = false;
-        },
-        cancel() {
-            this.$router.back();
         },
         save() {
             let exercises = this.store.get("exercises");
@@ -165,6 +190,9 @@ export default {
                 this.$router.back();
             }).catch(() => {
             });
+        },
+        back() {
+            this.$router.back();
         },
     },
 };

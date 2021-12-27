@@ -117,7 +117,6 @@ export default {
                 this.multipleSelected.forEach(item => {
                     if (!this.problem.options[item].isAnswer) {
                         this.correct = false;
-                        return;
                     }
                 });
                 this.problem.options.forEach((item, index) => {
