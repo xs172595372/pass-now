@@ -1,9 +1,7 @@
 <template>
     <div style="text-align: left; padding: 30px">
-        <el-header>
-            <el-button @click.native="back" style="margin-right: 20px">返回首页</el-button>
-            <span style="font-size: 20px;font-weight: bold">{{ this.exercise.title }}</span>
-        </el-header>
+        <el-button @click.native="back" style="margin-right: 20px">返回首页</el-button>
+        <span style="font-size: 20px;font-weight: bold">{{ this.exercise.title }}</span>
         <el-divider></el-divider>
         <span class="title">{{ problem.showTitle }}</span>
         <el-form v-model="problem">
@@ -74,9 +72,6 @@ export default {
             return;
         }
         this.next();
-        document.onkeydown = () => {
-
-        };
     },
     watch: {
         selected() {

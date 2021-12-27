@@ -1,11 +1,6 @@
 <template>
     <div style="padding: 30px">
         <el-row>
-            <el-col :span="24" style="text-align: left;margin: 20px">
-                <el-button @click.native="edit()">新增题库</el-button>
-            </el-col>
-        </el-row>
-        <el-row>
             <el-col
                 :span="8"
                 v-for="item in exercises"
@@ -19,6 +14,12 @@
                     <el-button type="primary" icon="el-icon-edit" @click.native="edit(item.id)" circle></el-button>
                 </el-card>
             </el-col>
+            <el-col :span="8" @click.native="edit()">
+                <el-card class="exercise add">
+                    <div><i class="el-icon-plus"></i><span style="margin-left: 20px;">新增题库</span></div>
+                </el-card>
+            </el-col>
+
 
         </el-row>
     </div>
@@ -58,6 +59,19 @@ export default {
 
 <style scoped>
 .exercise {
+    color: #333;
+    font-weight: bold;
     margin: 20px;
+    height: 150px;
+}
+
+.add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    border: 2px #ccc dashed;
+    color: #666;
+    cursor: pointer
 }
 </style>

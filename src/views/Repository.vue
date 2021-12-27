@@ -42,7 +42,7 @@
                 <el-button @click.native="editProblem()">新增题目</el-button>
                 <el-button type="primary" @click.native="save">保存</el-button>
                 <el-button type="danger" @click.native="del">删除</el-button>
-                <el-button type="info" @click.native="back">取消</el-button>
+                <el-button type="info" @click.native="back">返回</el-button>
             </el-form-item>
         </el-form>
         <el-dialog
@@ -192,7 +192,11 @@ export default {
             });
         },
         back() {
-            this.$router.back();
+            this.$confirm("尚未保存，确认返回？").then(() => {
+                this.$router.back();
+            }).catch(() => {
+
+            });
         },
     },
 };
