@@ -18,7 +18,7 @@ const routes = [
         path: "/repository",
         name: "EditRepository",
         component: () =>
-            import("../views/Repository.vue"),
+            import("../views/Repository/Repository.vue"),
     },
 ];
 

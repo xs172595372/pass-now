@@ -124,7 +124,9 @@ export default {
             }
         },
         next() {
-            const randArr = this.exercise.problems.filter(item => item.title !== this.problem.title);
+            const randArr = this.exercise.problems.filter(item =>
+                this.exercise.problems.length < 2 || item.title !== this.problem.title,
+            );
             this.problem = randArr[Math.floor(Math.random() * randArr.length)];
             this.problem.showTitle = "【" + (this.problem.type ? "单选" : "多选") + "】" + this.problem.title;
             this.hasSubmit = false;
