@@ -1,9 +1,8 @@
 <template>
-    <div style="padding: 30px">
-        <div style="color:#333;font-size: 20px;font-weight: bold;text-align: left">
-            <i class="el-icon-arrow-left"
-               style="font-size: 20px;cursor: pointer;margin-right: 10px"
-               @click="back"></i>编辑题库
+    <div class="container">
+        <div class="header">
+            <i class="el-icon-arrow-left" @click="back"></i>
+            <span>编辑题库</span>
         </div>
         <el-divider></el-divider>
         <el-form ref="form" :model="form" label-width="80px" :rules="rules">
@@ -13,20 +12,18 @@
             <el-form-item label="题库名称" prop="title">
                 <el-input v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="题目列表" style="text-align: left">
-                <el-table :data="this.form.problems">
-                    <el-table-column type="index" label="ID" width="40"></el-table-column>
-                    <el-table-column prop="title" label="题目" sortable min-width="400"></el-table-column>
-                    <el-table-column prop="type" :formatter="row => row.type ? '单选' : '多选'" width="50"
-                                     label="类型"></el-table-column>
-                    <el-table-column fixed="right" label="操作" align="center" width="150">
-                        <template slot-scope="scope">
-                            <el-button @click="editProblem(scope.row)" type="primary" size="small">编辑</el-button>
-                            <el-button @click="delProblem(scope.row)" type="danger" size="small">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </el-form-item>
+            <el-table :data="this.form.problems" class="table">
+                <el-table-column type="index" label="ID" width="40"></el-table-column>
+                <el-table-column prop="title" label="题目" sortable min-width="400"></el-table-column>
+                <el-table-column prop="type" :formatter="row => row.type ? '单选' : '多选'" width="50"
+                                 label="类型"></el-table-column>
+                <el-table-column fixed="right" label="操作" align="center" width="150">
+                    <template slot-scope="scope">
+                        <el-button @click="editProblem(scope.row)" type="primary" size="small">编辑</el-button>
+                        <el-button @click="delProblem(scope.row)" type="danger" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
             <el-form-item>
                 <el-button @click.native="editProblem()">新增题目</el-button>
                 <el-button type="primary" @click.native="save">保存</el-button>
@@ -160,3 +157,26 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.container {
+    padding: 30px;
+}
+
+.header {
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.header i {
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.table {
+    margin-bottom: 30px;
+}
+</style>

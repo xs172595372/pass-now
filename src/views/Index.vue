@@ -1,6 +1,6 @@
 <template>
-    <div style="padding: 30px">
-        <div style="font-size: 20px;font-weight: bold;text-align: left">我的题库</div>
+    <div class="container">
+        <div class="title">我的题库</div>
         <el-divider></el-divider>
         <el-row>
             <el-col
@@ -9,7 +9,7 @@
                 :key="item.id"
             >
                 <el-card class="exercise">
-                    <div style="margin-bottom: 20px">{{ item.title }}</div>
+                    <div>{{ item.title }}</div>
                     <el-button style="margin: 10px" type="success" icon="el-icon-switch-button"
                                @click.native="study(item.id)"
                                circle></el-button>
@@ -58,11 +58,25 @@ export default {
 </script>
 
 <style scoped>
+.container {
+    padding: 30px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
 .exercise {
     color: #333;
     font-weight: bold;
     margin: 20px;
     height: 150px;
+}
+
+.exercise div {
+    margin-bottom: 20px
 }
 
 .add {

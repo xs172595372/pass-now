@@ -5,7 +5,7 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
         :visible.sync="show">
-        <el-form ref="form" :model="form" label-width="80px" :rules="rules" style="text-align: left">
+        <el-form ref="form" :model="form" label-width="80px" :rules="rules" class="form">
             <el-form-item label="id" hidden>
                 <el-input v-model="form.id"></el-input>
             </el-form-item>
@@ -99,5 +99,7 @@ export default {
 </script>
 
 <style scoped>
-
+.form {
+    text-align: left
+}
 </style>

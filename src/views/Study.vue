@@ -1,7 +1,7 @@
 <template>
-    <div style="text-align: left; padding: 30px">
-        <i class="el-icon-arrow-left" style="font-size: 20px;cursor: pointer" @click="back"></i>
-        <span style="color:#333;font-size: 20px;font-weight: bold;margin-left: 10px">{{ this.exercise.title }}</span>
+    <div class="container">
+        <i class="el-icon-arrow-left back" @click="back"></i>
+        <span class="exercise">{{ this.exercise.title }}</span>
         <el-divider></el-divider>
         <span class="title">{{ problem.showTitle }}</span>
         <el-form v-model="problem">
@@ -143,6 +143,23 @@ export default {
 </script>
 
 <style scoped>
+.container {
+    text-align: left;
+    padding: 30px;
+}
+
+.back {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.exercise {
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
 .title {
     font-size: 18px;
 }
